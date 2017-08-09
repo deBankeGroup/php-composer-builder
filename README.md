@@ -8,10 +8,12 @@ See here for installing more extensions <https://github.com/docker-library/docs/
 
 ## Extracting LABEL metadata with JQ
 
+```sh
 docker inspect ${my_container} | jq -r '.[0].Config.Labels["org.label-schema.maintainer"]'
+```
 
 # Building
 
 ```sh
-docker build --build-arg date=$(date +%Y-%m-%dT%T%z) -t foo
+docker build --build-arg date=$(date +%Y-%m-%dT%T%z) -t php-composer:latest .
 ```
