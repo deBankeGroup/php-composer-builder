@@ -27,7 +27,8 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
               echo "--- Built Images ---"
-              docker images php-composer
+              docker images damacus/php-composer
+              docker tag damacus/php-composer:latest damacus/php-composer:$TAG
               docker push damacus/php-composer:$TAG
               docker push damacus/php-composer:latest
             else
