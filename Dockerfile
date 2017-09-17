@@ -13,7 +13,11 @@ RUN wget -O /etc/apk/keys/php-alpine.rsa.pub http://php.codecasts.rocks/php-alpi
 
 WORKDIR /opt
 COPY install-composer.sh install-composer.sh
-RUN apk update && apk add ca-certificates && update-ca-certificates && apk add openssl
-RUN chmod +x install-composer.sh && ./install-composer.sh
+RUN apk update - &&\
+    apk add --no-cache ca-certificates &&\
+		update-ca-certificates &&\
+    apk add --no-cache openssl &&\
+    chmod +x install-composer.sh 
+RUN ./install-composer.sh
 
 WORKDIR /src
