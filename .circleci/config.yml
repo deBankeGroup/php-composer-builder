@@ -1,9 +1,13 @@
+---
+# Use "default as the reponame's default so we can run this generic script locally
+#
+
 version: 2
 jobs:
-  build_and_push:
+  build:
     docker:
       - image: golang:latest
-    working_directory: /go/src/github.com/php-composer
+        working_directory: /go/src/github.com/${CIRCLECI_PROJECT_REPONAME:-default}
     steps:
       - checkout
       - setup_remote_docker:
@@ -13,12 +17,12 @@ jobs:
           command: |
             set -x
             VER="17.05.0-ce"
-            curl -L -o /tmp/docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            curl -L -o /tmp/docker.tgz https://get.docker.com/builds/Linux/x86_64/docker-${VER:?}.tgz
             tar -xz -C /tmp -f /tmp/docker.tgz
             mv /tmp/docker/* /usr/bin
       - run:
           name: Build
-          command: docker build --build-arg date=$(date +%Y-%m-%dT%T%z) . -t damacus/php-composer
+          command: docker build --build-arg date=$(date +%Y-%m-%dT%T%z) . -t ${CIRCLE_PROJECT_USERNAME:-damacus}/${CIRCLECI_PROJECT_REPONAME:-project}
       - deploy:
           name: Push
           context: org-global
@@ -26,11 +30,11 @@ jobs:
             TAG=$CIRCLE_BUILD_NUM
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-              echo "--- Built Images ---"
-              docker images damacus/php-composer
-              docker tag damacus/php-composer:latest damacus/php-composer:$TAG
-              docker push damacus/php-composer:$TAG
-              docker push damacus/php-composer:latest
+              printf "/n/n--- Built Images ---/n/"
+              docker images ${CIRCLE_PROJECT_USERNAME:-damacus}/${CIRCLECI_PROJECT_REPONAME:-default}
+              docker tag ${CIRCLE_PROJECT_USERNAME:-damacus}/${CIRCLECI_PROJECT_REPONAME:-default}:latest ${CIRCLECI_PROJECT_USERNAME:-damacus}/${CIRCLE_PROJECT_REPONAME:-default}:${TAG:?}
+              docker push ${CIRCLE_PROJECT_USERNAME:-damacus}/${CIRCLECI_PROJECT_REPONAME:-default}:$TAG
+              docker push ${CIRCLE_PROJECT_USERNAME:-damacus}/${CIRCLECI_PROJECT_REPONAME:-default}:latest
             else
               echo "Not on master so not tagging"
               docker images
@@ -40,5 +44,5 @@ workflows:
   version: 2
   build_and_push:
     jobs:
-      - build_and_push:
+      - build:
           context: org-global
