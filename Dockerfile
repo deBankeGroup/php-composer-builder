@@ -14,13 +14,14 @@ LABEL "org.label-schema.commit-sha"=$COMMIT
 
 WORKDIR /opt
 COPY install-composer.sh install-composer.sh
-RUN apk add --no-cache ca-certificates openssl &&\
-    update-ca-certificates                     &&\
-    chmod +x install-composer.sh               &&\
+
+ENV BUILD_PACKAGES bash curl-dev build-base libffi-dev ca-certificates openssl git
+RUN apk add --no-cache $BUILD_PACKAGES    &&\
+    update-ca-certificates                &&\
+    addgroup -S composer                  &&\
+    adduser -S -g composer composer       &&\
+    chmod +x install-composer.sh          &&\
     ./install-composer.sh
-RUN apk add --no-cache git openssh &&\
-    addgroup -S composer &&\
-    adduser -S -g composer composer
 
 USER composer
-WORKDIR /src
+WORKDIR /project
