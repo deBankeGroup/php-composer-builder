@@ -5,6 +5,7 @@ ARG MAINTAINER
 ARG URL
 ARG DATE
 ARG COMMIT
+ARG user='root'
 LABEL "org.label-schema.name"=$PROJECT
 LABEL "org.label-schema.build-date"=$DATE
 LABEL "org.label-schema.maintainer"=$MAINTAINER
@@ -23,5 +24,5 @@ RUN apk add --no-cache $BUILD_PACKAGES    &&\
     chmod +x install-composer.sh          &&\
     ./install-composer.sh
 
-USER composer
+USER $user 
 WORKDIR /project
