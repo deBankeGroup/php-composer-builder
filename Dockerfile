@@ -20,5 +20,8 @@ RUN apk add --no-cache ca-certificates openssl &&\
     ./install-composer.sh
 RUN apk add --no-cache git
 
+RUN groupadd composer               &&\
+    useradd composer
 
+USER composer
 WORKDIR /src
