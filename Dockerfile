@@ -15,7 +15,7 @@ LABEL "org.label-schema.commit-sha"=$COMMIT
 WORKDIR /opt
 COPY install-composer.sh install-composer.sh
 
-ENV BUILD_PACKAGES bash curl-dev build-base libffi-dev ca-certificates openssl git
+ENV BUILD_PACKAGES bash curl-dev build-base libffi-dev ca-certificates openssl git openssh
 RUN apk add --no-cache $BUILD_PACKAGES    &&\
     update-ca-certificates                &&\
     addgroup -S composer                  &&\
