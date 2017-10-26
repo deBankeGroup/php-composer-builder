@@ -20,9 +20,9 @@ ENV BUILD_PACKAGES bash curl-dev build-base libffi-dev ca-certificates openssl g
 RUN apk add --no-cache $BUILD_PACKAGES    &&\
     update-ca-certificates                &&\
     addgroup -S composer                  &&\
-    adduser -S -g composer composer       &&\
-    chmod +x install-composer.sh          &&\
-    ./install-composer.sh
+    adduser -S -g composer composer
+RUN chmod +x install-composer.sh
+RUN ./install-composer.sh
 
 USER $user 
 WORKDIR /project
