@@ -40,7 +40,17 @@ jobs:
 
 workflows:
   version: 2
-  build_and_push:
+  build:
     jobs:
       - build:
           context: org-global
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build

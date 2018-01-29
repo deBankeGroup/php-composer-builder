@@ -9,7 +9,7 @@ control 'composer-commands' do
   desc 'Should respond to the composer command'
   describe command('composer') do
     its('exit_status') { should match 0 }
-    its('stdout') { should match /Composer version 1.5.5/ }
+    its('stdout') { should match /Composer version/ }
   end
 
   describe command('git') do
