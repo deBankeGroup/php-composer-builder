@@ -2,7 +2,7 @@
 
 See here for installing more extensions <https://github.com/docker-library/docs/tree/master/php#how-to-install-more-php-extensions>
 
-# Image Annottions
+# Image Annotations
 
 <https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys>
 
