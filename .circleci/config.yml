@@ -6,7 +6,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: damacus/docker-builder:latest
+      - image: debankegroup/docker-builder:latest
     working_directory: ~/project
     steps:
       - checkout
